@@ -75,7 +75,7 @@ class PhotosController extends Controller
                 'type' => 'photo',
                 'state' => 'queue',
                 'tags' => 'glitch,glitchart,glitch art,glitchimg.com',
-                'caption' => 'Glitch art created by' . $user->name . ' at <a href="http://glitchimg.com">glitchimg.com</a>',
+                'caption' => 'Glitch art created by ' . $user->name . ' at <a href="http://glitchimg.com">glitchimg.com</a>',
                 'link' => $urls['page'],
                 'source' => $urls['shareable'],
             ]);
