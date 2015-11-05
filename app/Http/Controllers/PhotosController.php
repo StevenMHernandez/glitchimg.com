@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Tumblr;
+use App\Helpers\UrlGenerator;
 
 class PhotosController extends Controller
 {
@@ -23,18 +24,9 @@ class PhotosController extends Controller
     public function show($filename)
     {
         $photo = Images::where('filename', $filename)->with('user')->first();
+        $urls = UrlGenerator::buildAll($photo->id);
         $photo->uri = config('filesystems.disks.s3.url') . 'preview/' . $filename . '.jpg';
-
-        $directLink = config('filesystems.disks.s3.direct_url') . 'full/' . $filename . '.png';
-
-        $d = 10;
-        $printLink = 'http://www.zazzle.com/api/create/at-238499648125991919?rf=238499648125991919&ax=Linkover&pd=' . '190612048809777765' . '&fwd=productpage&tc=pop&ic=imagePage&t_image0_iid=' . $directLink;
-        if ($photo->orientation == 'horizontal') {
-            $printLink .= '&size=[' . $d . '%2C' . $d * $photo->ratio . ']';
-        } else if ($photo->orientation == 'vertical') {
-            $printLink .= '&size=[' . $d * $photo->ratio . '%2C' . $d . ']';
-        }
-        return view('photos.show', compact('photo', 'printLink'));
+        return view('photos.show', compact('photo', 'urls'));
     }
 
     public function upload(Request $request)
@@ -68,7 +60,7 @@ class PhotosController extends Controller
 
         $user = Auth::user();
         $user->with('settings');
-        if ($user->settings->share_to_our_tumblr) {
+        if ($user->settings->share_to_our_tumblr && env('APP_ENV') != 'local') {
             $client = new Tumblr\API\Client(env('TUMBLR_KEY'), env('TUMBLR_SECRET'));
             $client->setToken(env('TUMBLR_TOKEN'), env('TUMBLR_TOKEN_SECRET'));
             $client->createPost('created-at-glitchimg', [
@@ -82,7 +74,7 @@ class PhotosController extends Controller
         }
 
         return [
-            'url' => $urls
+            'urls' => UrlGenerator::buildAll($image->id)
         ];
     }
 }

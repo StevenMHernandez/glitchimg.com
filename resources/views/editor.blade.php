@@ -45,6 +45,7 @@
                 <span id="uploading"></span>
             </span>
 			<span id="offer">
+                <a target="_blank" id="viewThis" href="#"><h2>View and save your glitch art!</h2></a>
                 <a target="_blank" id="printThis" href="#"><h2>Order this as a glitch-poster!</h2></a>
                 <span style="text-align: center">
                     <a target="_blank" id="posterLink" href="#">
@@ -66,7 +67,7 @@
         <span onClick="undo()" id="undo">undo.</span>
         <span onClick="redo()" id="undo">redo.</span>
         <!--<span onmousedown="past()" onmouseup="render()" id="upload">compare to past.</span>-->
-        <span onClick="upload()" id="upload">upload & share.</span>
+        <span onClick="upload()" id="upload">save & share.</span>
 
         <div>
             {{--@foreach($filters as $filter)--}}
@@ -372,34 +373,16 @@
                 function (data) {
                     $("#uploading").trigger('close');
                     $("#offer").lightbox_me();
-                    var directLink = data.url.direct;
-                    var shareableLink = data.url.shareable;
-                    var pageLink = data.url.page;
 
-                    var pH, pW, posterLink;
                     document.getElementById('uploading').innerHTML = '';
-                    if (height > width) {
-                        pH = 10;
-                        pW = (width / height) * pH;
-                        posterLink = 'http://www.zazzle.com/api/create/at-238499648125991919?rf=238499648125991919&ax=Linkover&pd=190612048809777765&fwd=productpage&tc=pop&ic=' + 'pop' + '&t_image0_iid=' + directLink + '&size=[' + pW + '%2C' + pH + ']';
-                    }
-                    else if (width == height) {
-                        posterLink = 'http://www.zazzle.com/api/create/at-238499648125991919?rf=238499648125991919&ax=Linkover&pd=190612048809777765&fwd=productpage&tc=pop&ic=' + 'pop' + '&t_image0_iid=' + directLink;
-                    }
-                    else {
-                        pW = 10;
-                        pH = (height / width) * pW;
-                        posterLink = 'http://www.zazzle.com/api/create/at-238499648125991919?rf=238499648125991919&ax=Linkover&pd=190612048809777765&fwd=productpage&tc=pop&ic=' + 'pop' + '&t_image0_iid=' + directLink + '&size=[' + pW + '%2C' + pH + ']';
-                    }
-                    document.getElementById('posterLink').href = posterLink;
-                    document.getElementById('printThis').href = posterLink;
+                    document.getElementById('posterLink').href = data.urls.zazzle;
+                    document.getElementById('printThis').href = data.urls.zazzle;
+                    document.getElementById('viewThis').href = data.urls.glitchimg;
                     @if (Auth::user()->provider == 'facebook')
-                    document.getElementById('shareLink').href = 'https://www.facebook.com/sharer/sharer.php?u=' + pageLink;
+                    document.getElementById('shareLink').href = data.urls.facebook;
                     @else(Auth::user()->provider == 'twitter')
-                    document.getElementById('shareLink').href = 'https://twitter.com/intent/tweet?url=' + pageLink + '&hashtags=glitchart,glitch,glitchimg.com&via=glitch_img';
+                    document.getElementById('shareLink').href = data.urls.twitter;
                     @endif
-
-
 
                 }
         );
@@ -555,6 +538,13 @@
                 break;
         }
     }
+    preview.addEventListener('contextmenu', function (e) {
+        if (e.button === 2) {
+            alert('Click "save & share." to save you glitch art');
+            e.preventDefault();
+            return false;
+        }
+    }, false);
 </script>
 </body>
 </html>
