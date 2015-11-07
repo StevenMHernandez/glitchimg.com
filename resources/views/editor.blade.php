@@ -384,6 +384,7 @@
                     document.getElementById('shareLink').href = data.urls.twitter;
                     @endif
 
+
                 }
         );
     }
@@ -538,6 +539,7 @@
                 break;
         }
     }
+    @if(env('APP_ENV') != 'local')
     preview.addEventListener('contextmenu', function (e) {
         if (e.button === 2) {
             alert('Click "save & share." to save you glitch art');
@@ -545,6 +547,8 @@
             return false;
         }
     }, false);
+    @endif
 </script>
+@include('layouts._analytics')
 </body>
 </html>
