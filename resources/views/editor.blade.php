@@ -44,7 +44,7 @@
             <span id="uploading">
                 <span id="uploading"></span>
             </span>
-			<span id="offer">
+			<span id="modal">
                 <a target="_blank" id="viewThis" href="#"><h2>View and save your glitch art!</h2></a>
                 <a target="_blank" id="printThis" href="#"><h2>Order this as a glitch-poster!</h2></a>
                 <span style="text-align: center">
@@ -70,12 +70,6 @@
         <span onClick="upload()" id="upload">save & share.</span>
 
         <div>
-            {{--@foreach($filters as $filter)--}}
-            {{--<span onClick="{{ $filter->onLoad  }}">--}}
-            {{--<img src="{{ $filter->uri }}"/>--}}
-            {{--<span>{{ $filter->name }}</span>--}}
-            {{--</span>--}}
-            {{--@endforeach--}}
             <span onClick="loadFilter('ebit')">
                 <img src="/assets/images/filters/8bit.jpg"/>
                 8-bit
@@ -367,12 +361,12 @@
                     orientation: orientation,
                     ratio: ratio,
                     _token: '{{ csrf_token() }}',
-                    preview: document.getElementById('preview').toDataURL('image/jpeg', .81),
+                    preview: document.getElementById('preview').toDataURL('image/jpeg', .95),
                     large: document.getElementById('large').toDataURL('image/png')
                 },
                 function (data) {
                     $("#uploading").trigger('close');
-                    $("#offer").lightbox_me();
+                    $("#modal").lightbox_me();
 
                     document.getElementById('uploading').innerHTML = '';
                     document.getElementById('posterLink').href = data.urls.zazzle;

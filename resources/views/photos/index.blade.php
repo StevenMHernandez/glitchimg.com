@@ -9,7 +9,7 @@
         @if ($photos->count())
             @foreach($photos as $photo)
                 <a href="{{ route('photos.show', [$photo->filename]) }}"><img
-                            src="{{ config('filesystems.disks.s3.direct_url') . 'preview/' . $photo->filename . '.jpg'}}"/></a>
+                            src="{{ UrlGenerator::build('preview_image', $photo->id) }}"/></a>
                 <br/>
             @endforeach
         @else

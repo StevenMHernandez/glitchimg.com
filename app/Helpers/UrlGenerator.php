@@ -19,6 +19,10 @@ class UrlGenerator {
             case 'glitchimg':
                 return route('photos.show', $photo->filename);
                 break;
+            case 'preview_image':
+                return config('filesystems.disks.s3.url') . 'preview/' . $photo->filename . '.jpg';
+            case 'full_image':
+                return config('filesystems.disks.s3.url') . 'full/' . $photo->filename . '.png';
             case 'zazzle':
                 $d = 10;
                 $directLink = config('filesystems.disks.s3.direct_url') . 'full/' . $photo->filename . '.png';

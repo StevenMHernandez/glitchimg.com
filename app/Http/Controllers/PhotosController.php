@@ -25,7 +25,7 @@ class PhotosController extends Controller
     {
         $photo = Images::where('filename', $filename)->with('user')->first();
         $urls = UrlGenerator::buildAll($photo->id);
-        $photo->uri = config('filesystems.disks.s3.url') . 'preview/' . $filename . '.jpg';
+        $photo->uri = UrlGenerator::build('preview_image', $photo->id);
         return view('photos.show', compact('photo', 'urls'));
     }
 

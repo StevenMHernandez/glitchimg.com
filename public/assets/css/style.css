@@ -16,7 +16,6 @@ html {
 }
 
 body {
-    background: #fbfbfb;
     background: #e1e1e1;
     font-size: 1.5em;
     font-family: "trebuchet ms", sans-serif;
@@ -144,9 +143,7 @@ div p {
 }
 
 #wrapper img {
-    max-width: 100%;
-    image-rendering: auto;
-    image-rendering: auto;
+    max-width: 63%;
     image-rendering: auto;
     -ms-interpolation-mode: auto;
 }

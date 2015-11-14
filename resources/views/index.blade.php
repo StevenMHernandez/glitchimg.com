@@ -12,6 +12,10 @@
             <a href="/login">Start Now!</a>
         </p>
         <br/>
-        <img src="http://41.media.tumblr.com/2e971d1168aac93ee1c64e36003d8d07/tumblr_mz9byhWdNP1t029v6o1_1280.jpg"/>
+        <p>
+            Check out this image created with the filters here:
+        </p>
+        <br/>
+        <img src="{{ $randomImage }}"/>
     </div>
 @endsection

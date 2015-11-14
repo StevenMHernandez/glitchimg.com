@@ -18,14 +18,16 @@
             <br/>
         </p>
         <br/>
-        <a target="_blank" href="">
-            <img src="{{ $photo->uri }}"/>
-        </a>
+
+        <img src="{{ $photo->uri }}"/>
         <br/>
 
         <p>
             @if (Auth::guest() || Auth::user()->id != $photo->user->id)
                 glitch image created by : {{ $photo->user->name }}
+            @endif
+            @if (Auth::user()->id == $photo->user->id)
+                glitch image created by you!
             @endif
             @if (Auth::guest())
                 </br>
@@ -33,5 +35,6 @@
                 Create glitch art of your own by <a href="/login">Logging In</a>!<br/> In addition, share and print your
                 awesomely unique glitch-art creations!
             @endif
-        </p></div>
+        </p>
+    </div>
 @endsection

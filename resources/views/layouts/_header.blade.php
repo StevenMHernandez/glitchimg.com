@@ -5,7 +5,7 @@
             <li><a href="/editor">editor.</a></li>
             <li><a target="_blank" href="http://created-at-glitchimg.tumblr.com/ask">contact.</a></li>
             <li><a href="/logout">logout.</a></li>
-            <li><a href="/profile">{{ Auth::user()->name }}</a></li>
+            <li><a href="/profile">Your Profile</a></li>
         @else
             <li><a target="_blank" href="http://glitch-img.tumblr.com">blog.</a></li>
             <li><a target="_blank" href="http://created-at-glitchimg.tumblr.com/ask">contact.</a></li>
