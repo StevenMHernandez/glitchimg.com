@@ -5,10 +5,18 @@
 
         <p>
             @if (Auth::check() && Auth::user()->id == $photo->user->id)
+                <i class="fa fa-fw   fa-photo"></i>
                 <a target="_blank" rel="nofollow" href="{{ $urls['zazzle'] }}">
                     Order a print
-                    of {{ Auth::check() && Auth::user()->id == $photo->user->id ? 'your glitch art!' : 'this glitch image!'}}
+                    of {{ Auth::check() && Auth::user()->id == $photo->user->id ? 'your glitch art.' : 'this glitch image.'}}
                 </a>
+                <br/>
+                <br/><i class="fa fa-fw fa-gift"></i>
+                <a target="_blank" rel="nofollow" href="{{ $urls['zazzle_wrapping_paper'] }}">
+                    Make this glitch art into wrapping paper.
+                </a>
+                <small>(New!)</small>
+                <br/>
                 <br/>
             @endif
             share {{ Auth::check() && Auth::user()->id == $photo->user->id ? 'your awesome glitch art:' : '' }}

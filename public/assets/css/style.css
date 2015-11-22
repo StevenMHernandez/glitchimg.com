@@ -240,7 +240,7 @@ input[type="submit"] {
     opacity: .9;
 }
 
-#uploading, #offer {
+#uploading, #offer, #modal {
     background: url('/assets/images/background-texture.png');
     border-radius: .5em;
     padding: 1.5em;

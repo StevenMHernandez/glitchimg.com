@@ -45,8 +45,24 @@
                 <span id="uploading"></span>
             </span>
 			<span id="modal">
-                <a target="_blank" id="viewThis" href="#"><h2>View and save your glitch art!</h2></a>
-                <a target="_blank" id="printThis" href="#"><h2>Order this as a glitch-poster!</h2></a>
+                <a target="_blank" id="viewThis" href="#">
+                    <h3>
+                        <i class="fa fa-fw fa-zoom"></i>
+                        View and save your glitch art.
+                    </h3>
+                </a>
+                <a target="_blank" id="printThis" href="#">
+                    <h3>
+                        <i class="fa fa-fw fa-picture"></i>
+                        Order this as a glitch-poster.
+                    </h3>
+                </a>
+                <a target="_blank" id="printThisWrappingPaper" href="#">
+                    <h3>
+                        <i class="fa fa-fw fa-gift"></i>
+                        Turn this glitch art into wrapping paper. <small>(new)</small>
+                    </h3>
+                </a>
                 <span style="text-align: center">
                     <a target="_blank" id="posterLink" href="#">
                         <img title="buy a print!" id="printer" style="border-radius:.5em; height: 72px;"
@@ -371,6 +387,7 @@
                     document.getElementById('uploading').innerHTML = '';
                     document.getElementById('posterLink').href = data.urls.zazzle;
                     document.getElementById('printThis').href = data.urls.zazzle;
+                    document.getElementById('printThisWrappingPaper').href = data.urls.zazzle_wrapping_paper;
                     document.getElementById('viewThis').href = data.urls.glitchimg;
                     @if (Auth::user()->provider == 'facebook')
                     document.getElementById('shareLink').href = data.urls.facebook;

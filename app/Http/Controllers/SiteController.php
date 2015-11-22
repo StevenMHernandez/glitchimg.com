@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\UrlGenerator;
-use App\Http\Controllers\Controller;
 use App\Images;
 use Illuminate\Support\Facades\Cache;
 use Tumblr;

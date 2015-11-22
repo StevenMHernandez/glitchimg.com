@@ -7,6 +7,7 @@ class UrlGenerator {
         return [
             'glitchimg' => UrlGenerator::build('glitchimg', $image_id),
             'zazzle' => UrlGenerator::build('zazzle', $image_id),
+            'zazzle_wrapping_paper' => UrlGenerator::build('zazzle_wrapping_paper', $image_id),
             'twitter' => UrlGenerator::build('twitter', $image_id),
             'tumblr' => UrlGenerator::build('tumblr', $image_id),
             'facebook' => UrlGenerator::build('facebook', $image_id),
@@ -26,12 +27,17 @@ class UrlGenerator {
             case 'zazzle':
                 $d = 10;
                 $directLink = config('filesystems.disks.s3.direct_url') . 'full/' . $photo->filename . '.png';
-                $printLink = 'http://www.zazzle.com/api/create/at-238499648125991919?rf=238499648125991919&ax=Linkover&pd=' . '190612048809777765' . '&fwd=productpage&tc=pop&ic=imagePage&t_image0_iid=' . $directLink;
+                $printLink = 'http://www.zazzle.com/api/create/at-238499648125991919?rf=238499648125991919&ax=Linkover&pd=' . '190612048809777765' . '&fwd=productpage&tc=pop&ic=' . $photo->filename . '&t_image0_iid=' . $directLink;
                 if ($photo->orientation == 'horizontal') {
                     $printLink .= '&size=[' . $d . '%2C' . $d * $photo->ratio . ']';
                 } else if ($photo->orientation == 'vertical') {
                     $printLink .= '&size=[' . $d * $photo->ratio . '%2C' . $d . ']';
                 }
+                return $printLink;
+                break;
+            case 'zazzle_wrapping_paper' :
+                $directLink = config('filesystems.disks.s3.direct_url') . 'full/' . $photo->filename . '.png';
+                $printLink = 'http://www.zazzle.com/api/create/at-238499648125991919?rf=238499648125991919&ax=Linkover&pd=' . '256754757427346084' . '&fwd=ProductPage&ed=true&tc=&ic=' . $photo->filename . '&t_image0_iid=' . $directLink;
                 return $printLink;
                 break;
             case 'facebook':
