@@ -11,14 +11,17 @@
                     of {{ Auth::check() && Auth::user()->id == $photo->user->id ? 'your glitch art.' : 'this glitch image.'}}
                 </a>
                 <br/>
-                <br/><i class="fa fa-fw fa-gift"></i>
-                <a target="_blank" rel="nofollow" href="{{ $urls['zazzle_wrapping_paper'] }}">
-                    Make this glitch art into wrapping paper.
-                </a>
-                <small>(New!)</small>
-                <br/>
                 <br/>
             @endif
+
+            <i class="fa fa-fw fa-gift"></i>
+            <a target="_blank" rel="nofollow" href="{{ $urls['zazzle_wrapping_paper'] }}">
+                Make this glitch art into wrapping paper.
+            </a>
+            <small>(New!)</small>
+            <br/>
+            <br/>
+
             share {{ Auth::check() && Auth::user()->id == $photo->user->id ? 'your awesome glitch art:' : '' }}
             <a target="_blank" href="{{ $urls['tumblr'] }}">Tumblr.</a>
             <a target="_blank" href="{{ $urls['facebook'] }}">Facebook.</a>
@@ -34,7 +37,7 @@
             @if (Auth::guest() || Auth::user()->id != $photo->user->id)
                 glitch image created by : {{ $photo->user->name }}
             @endif
-            @if (Auth::user()->id == $photo->user->id)
+            @if (!Auth::guest() && Auth::user()->id == $photo->user->id)
                 glitch image created by you!
             @endif
             @if (Auth::guest())
