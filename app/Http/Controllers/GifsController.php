@@ -13,7 +13,7 @@ class GifsController extends Controller
     public function show($filename)
     {
         $gif = Gifs::where('filename', $filename)->with('user', 'images')->first();
-        $gif->uri = UrlGenerator::build('gif', $gif->id, 'gif');
+        $gif->uri = UrlGenerator::build('gif', $gif->filename, 'gif');
         return view('gifs.show', compact('gif'));
     }
 
@@ -63,9 +63,9 @@ class GifsController extends Controller
 
         return [
             'urls' => [
-                'glitchimg' => UrlGenerator::build('glitchimg', $request->gif_id, 'gif'),
-                'facebook' => UrlGenerator::build('facebook', $request->gif_id, 'gif'),
-                'twitter' => UrlGenerator::build('twitter', $request->gif_id, 'gif'),
+                'glitchimg' => UrlGenerator::build('glitchimg', $gif->filename, 'gif'),
+                'facebook' => UrlGenerator::build('facebook', $gif->filename, 'gif'),
+                'twitter' => UrlGenerator::build('twitter', $gif->filename, 'gif'),
             ]
         ];
     }

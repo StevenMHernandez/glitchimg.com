@@ -32,8 +32,8 @@ class PhotosController extends Controller
     public function show($filename)
     {
         $photo = Images::where('filename', $filename)->with('user')->first();
-        $urls = UrlGenerator::buildAll($photo->id);
-        $photo->uri = UrlGenerator::build('preview_image', $photo->id);
+        $urls = UrlGenerator::buildAll($photo->filename);
+        $photo->uri = UrlGenerator::build('preview_image', $photo->filename);
         return view('photos.show', compact('photo', 'urls'));
     }
 
@@ -83,7 +83,7 @@ class PhotosController extends Controller
         }
 
         return [
-            'urls' => UrlGenerator::buildAll($image->id)
+            'urls' => UrlGenerator::buildAll($image->filename)
         ];
     }
 }

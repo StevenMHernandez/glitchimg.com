@@ -10,11 +10,11 @@
             @foreach($photos as $photo)
                 @if ($photo->type == 'gif')
                     <a href="{{ route('gifs.show', [$photo->filename]) }}">
-                        <img src="{{ UrlGenerator::build('gif', $photo->id, 'gif') }}"/>
+                        <img src="{{ UrlGenerator::build('gif', $photo->filename, 'gif') }}"/>
                     </a>
                 @else
                     <a href="{{ route('photos.show', [$photo->filename]) }}">
-                        <img src="{{ UrlGenerator::build('preview_image', $photo->id) }}"/>
+                        <img src="{{ UrlGenerator::build('preview_image', $photo->filename) }}"/>
                     </a>
                 @endif
                 <br/>

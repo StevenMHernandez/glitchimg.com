@@ -13,7 +13,7 @@ class SiteController extends Controller
     {
         $randomImage = Cache::remember('random_image', 5, function()
         {
-            return UrlGenerator::build('full_image', Images::orderByRaw("RAND()")->first()->id);
+            return UrlGenerator::build('full_image', Images::orderByRaw("RAND()")->first()->filename);
         });
         return view('index', compact('randomImage'));
     }

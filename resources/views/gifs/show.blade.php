@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('head')
-    <meta property="og:image" content="{{ $gif->uri }}"/>
+    <meta property="og:image" content="{{ UrlGenerator::build('preview_image', $gif->images[0]->filename) }}"/>
 @endsection
 
 @section('content')
@@ -9,9 +9,9 @@
 
         <p>
             share {{ Auth::check() && Auth::user()->id == $gif->user->id ? 'your awesome glitch art:' : '' }}
-            <a target="_blank" href="{{ UrlGenerator::build('tumblr', $gif->id, 'gif') }}">Tumblr.</a>
-            <a target="_blank" href="{{ UrlGenerator::build('facebook', $gif->id, 'gif') }}">Facebook.</a>
-            <a target="_blank" href="{{ UrlGenerator::build('twitter', $gif->id, 'gif') }}">Twitter.</a>
+            <a target="_blank" href="{{ UrlGenerator::build('tumblr', $gif->filename, 'gif') }}">Tumblr.</a>
+            <a target="_blank" href="{{ UrlGenerator::build('facebook', $gif->filename, 'gif') }}">Facebook.</a>
+            <a target="_blank" href="{{ UrlGenerator::build('twitter', $gif->filename, 'gif') }}">Twitter.</a>
             <br/>
         </p>
         <br/>
@@ -42,11 +42,13 @@
         <br/>
         @foreach($gif->images as $frame)
             <p style="text-align: center">
-                <img src="{{ UrlGenerator::build('preview_image', $frame->id) }}"/>
+                <img src="{{ UrlGenerator::build('preview_image', $frame->filename) }}"/>
                 <br/>
-                <a href="{{ UrlGenerator::build('zazzle', $frame->id) }}"><i class="fa fa-picture-o"></i> Get it as a
+                <a href="{{ UrlGenerator::build('zazzle', $frame->filename) }}"><i class="fa fa-picture-o"></i> Get it
+                    as a
                     Print</a>
-                <a href="{{ UrlGenerator::build('zazzle_wrapping_paper', $frame->id) }}"><i class="fa fa-gift"></i> Get
+                <a href="{{ UrlGenerator::build('zazzle_wrapping_paper', $frame->filename) }}"><i
+                            class="fa fa-gift"></i> Get
                     it as Wrapping Paper</a>
             </p>
             <br/>
