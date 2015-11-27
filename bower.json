@@ -16,6 +16,7 @@
     "Lightbox_me": "https://github.com/buckwilson/Lightbox_me.git",
     "blueimp-canvas-to-blob": "~2.2.0",
     "jquery": "~2.1.4",
-    "font-awesome": "~4.4.0"
+    "font-awesome": "~4.4.0",
+    "gif.js": "~0.1.6"
   }
 }

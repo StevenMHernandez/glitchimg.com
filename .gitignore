@@ -1,6 +1,6 @@
 /vendor
 /node_modules
-public/assets/js/bower_components
+public/assets/bower_components
 Homestead.yaml
 Homestead.json
 .env

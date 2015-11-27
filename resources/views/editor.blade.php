@@ -6,11 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="stylesheet" href="/assets/css/style.css">
+    <meta name="csrf-token" content="{{ csrf_token() }}"/>
 
-    <script type="text/javascript" src="/assets/js/bower_components/jquery/dist/jquery.min.js"></script>
-    <script type="text/javascript" src="/assets/js/bower_components/context-blender/context_blender.js"></script>
-    <script type="text/javascript" src="/assets/js/bower_components/Lightbox_me/jquery.lightbox_me.js"></script>
-    <script src="/assets/js/bower_components/blueimp-canvas-to-blob/js/canvas-to-blob.min.js"></script>
+    <script src="/assets/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/assets/bower_components/context-blender/context_blender.js"></script>
+    <script src="/assets/bower_components/Lightbox_me/jquery.lightbox_me.js"></script>
+    <script src="/assets/bower_components/blueimp-canvas-to-blob/js/canvas-to-blob.min.js"></script>
+    <script src="/assets/bower_components/gif.js/dist/gif.js"></script>
+    <script src="/assets/bower_components/gif.js/dist/gif.worker.js"></script>
+    <script src="/assets/js/create_gif.js"></script>
     <script>
         function printOver() {
             document.getElementById('printer').src = '/assets/images/print.gif';
@@ -48,7 +52,7 @@
                 <a target="_blank" id="viewThis" href="#">
                     <h3>
                         <i class="fa fa-fw fa-zoom"></i>
-                        View and save your glitch art.
+                        View and share your glitch art.
                     </h3>
                 </a>
                 <a target="_blank" id="printThis" href="#">
@@ -60,7 +64,8 @@
                 <a target="_blank" id="printThisWrappingPaper" href="#">
                     <h3>
                         <i class="fa fa-fw fa-gift"></i>
-                        Turn this glitch art into wrapping paper. <small>(new)</small>
+                        Turn this glitch art into wrapping paper.
+                        <small>(new)</small>
                     </h3>
                 </a>
                 <span style="text-align: center">
@@ -70,7 +75,21 @@
                              onmouseout="printOff();"
                              src="/assets/images/print.png"/>
                     </a>
-                    <a target="_blank" id="shareLink" href="#"><img title="share on {{ Auth::user()->provider }}"
+                    <a target="_blank" id="shareLink_{{ Auth::user()->provider }}" href="#"><img title="share on {{ Auth::user()->provider }}"
+                                                                    id="share" style="border-radius:.5em; height: 72px;"
+                                                                    src="/assets/images/{{ Auth::user()->provider }}.png"/>
+                    </a>
+				</span>
+			</span>
+			<span id="gif_modal">
+                <a target="_blank" id="gif_viewThis" href="#">
+                    <h3>
+                        <i class="fa fa-fw fa-zoom"></i>
+                        View and share your glitch gif.
+                    </h3>
+                </a>
+                <span style="text-align: center">
+                    <a target="_blank" id="gif_shareLink_{{ Auth::user()->provider }}" href="#"><img title="share on {{ Auth::user()->provider }}"
                                                                     id="share" style="border-radius:.5em; height: 72px;"
                                                                     src="/assets/images/{{ Auth::user()->provider }}.png"/>
                     </a>
@@ -84,6 +103,8 @@
         <span onClick="redo()" id="undo">redo.</span>
         <!--<span onmousedown="past()" onmouseup="render()" id="upload">compare to past.</span>-->
         <span onClick="upload()" id="upload">save & share.</span>
+        <span id="gif_save_button">save gif.</span>
+        <span id="gif_button">create gif.</span>
 
         <div>
             <span onClick="loadFilter('ebit')">
@@ -187,6 +208,11 @@
 </div>
 
 <script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
     var pixn, width, height, cPushArray, cStep, maxDimension, pHeight, pWidth;
     $('.panzoom').height($(document).height() - $('navigation').outerHeight());
     var max = 540;
@@ -333,10 +359,12 @@
         original.width = width;
         originalTx.drawImage(ctx.canvas, 0, 0, width, height);
     }
-    function upload() {
+    function upload(gif_id) {
         var lHeight, lWidth, ratio, orientation;
-        document.getElementById('uploading').innerHTML = '<img src="/assets/images/loading.gif"/> Uploading.';
-        $("#uploading").lightbox_me();
+        if (!gif_id) {
+            document.getElementById('uploading').innerHTML = '<img src="/assets/images/loading.gif"/> Uploading.';
+            $("#uploading").lightbox_me();
+        }
         save();
         //test resize
         var large = document.getElementById('large');
@@ -375,27 +403,25 @@
         $.post('/upload',
                 {
                     orientation: orientation,
+                    gif_id: gif_id,
                     ratio: ratio,
                     _token: '{{ csrf_token() }}',
                     preview: document.getElementById('preview').toDataURL('image/jpeg', .95),
                     large: document.getElementById('large').toDataURL('image/png')
                 },
                 function (data) {
-                    $("#uploading").trigger('close');
-                    $("#modal").lightbox_me();
+                    if (!gif_id) {
+                        $("#uploading").trigger('close');
+                        $("#modal").lightbox_me();
 
-                    document.getElementById('uploading').innerHTML = '';
-                    document.getElementById('posterLink').href = data.urls.zazzle;
-                    document.getElementById('printThis').href = data.urls.zazzle;
-                    document.getElementById('printThisWrappingPaper').href = data.urls.zazzle_wrapping_paper;
-                    document.getElementById('viewThis').href = data.urls.glitchimg;
-                    @if (Auth::user()->provider == 'facebook')
-                    document.getElementById('shareLink').href = data.urls.facebook;
-                    @else(Auth::user()->provider == 'twitter')
-                    document.getElementById('shareLink').href = data.urls.twitter;
-                    @endif
-
-
+                        document.getElementById('uploading').innerHTML = '';
+                        document.getElementById('posterLink').href = data.urls.zazzle;
+                        document.getElementById('printThis').href = data.urls.zazzle;
+                        document.getElementById('printThisWrappingPaper').href = data.urls.zazzle_wrapping_paper;
+                        document.getElementById('viewThis').href = data.urls.glitchimg;
+                        document.getElementById('shareLink_facebook').href = data.urls.facebook;
+                        document.getElementById('shareLink_twitter').href = data.urls.twitter;
+                    }
                 }
         );
     }

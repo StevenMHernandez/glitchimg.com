@@ -1,11 +1,9 @@
-<?php
-
-namespace App\Http\Controllers;
+<?php namespace App\Http\Controllers;
 
 use App\Images;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Tumblr;
 use App\Helpers\UrlGenerator;
@@ -15,8 +13,18 @@ class PhotosController extends Controller
 
     public function index()
     {
-        $photos = Images::where('user_id', Auth::user()->id)
-            ->orderBy('id', 'desc')
+        $gifs = DB::table('gifs')
+            ->where('user_id', Auth::user()->id)
+            ->select(['id', 'filename', 'user_id', 'created_at'])
+            ->selectRaw('CONCAT("gif") as "type"');
+
+        $photos = DB::table('images')
+            ->where('user_id', Auth::user()->id)
+            ->where('gif_id', null)
+            ->select(['id', 'filename', 'user_id', 'created_at'])
+            ->selectRaw('CONCAT("photo") as "type"')
+            ->union($gifs)
+            ->orderBy('created_at', 'desc')
             ->get();
         return view('photos.index', compact('photos'));
     }
@@ -48,7 +56,8 @@ class PhotosController extends Controller
             'filename' => $filename,
             'orientation' => $request->orientation,
             'ratio' => $request->ratio,
-            'user_id' => Auth::user()->id
+            'user_id' => Auth::user()->id,
+            'gif_id' => $request->gif_id
         ]);
         $image->save();
 
@@ -60,7 +69,7 @@ class PhotosController extends Controller
 
         $user = Auth::user();
         $user->with('settings');
-        if ($user->settings->share_to_our_tumblr && env('APP_ENV') != 'local') {
+        if ($user->settings->share_to_our_tumblr && env('APP_ENV') != 'local' && empty($request->gif_id)) {
             $client = new Tumblr\API\Client(env('TUMBLR_KEY'), env('TUMBLR_SECRET'));
             $client->setToken(env('TUMBLR_TOKEN'), env('TUMBLR_TOKEN_SECRET'));
             $client->createPost('created-at-glitchimg', [

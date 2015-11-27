@@ -7,10 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="stylesheet" href="/assets/css/style.css">
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
-    <link rel="stylesheet" href="/assets/js/bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/bower_components/font-awesome/css/font-awesome.min.css">
 
     <link rel="shortcut icon" href="/logo.png">
     <link href="/logo.png" rel="apple-touch-icon-precomposed"/>
+
+@yield('head')
 </head>
 <body>
 @include('layouts._header')

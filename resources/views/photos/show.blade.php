@@ -1,5 +1,9 @@
 @extends('layout')
 
+@section('head')
+    <meta property="og:image" content="{{ $photo->uri }}"/>
+@endsection
+
 @section('content')
     <div id="wrapper"><br/>
 

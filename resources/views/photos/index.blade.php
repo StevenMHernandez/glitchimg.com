@@ -6,10 +6,17 @@
 
 
     <div id="wrapper">
-        @if ($photos->count())
+        @if (count($photos))
             @foreach($photos as $photo)
-                <a href="{{ route('photos.show', [$photo->filename]) }}"><img
-                            src="{{ UrlGenerator::build('preview_image', $photo->id) }}"/></a>
+                @if ($photo->type == 'gif')
+                    <a href="{{ route('gifs.show', [$photo->filename]) }}">
+                        <img src="{{ UrlGenerator::build('gif', $photo->id, 'gif') }}"/>
+                    </a>
+                @else
+                    <a href="{{ route('photos.show', [$photo->filename]) }}">
+                        <img src="{{ UrlGenerator::build('preview_image', $photo->id) }}"/>
+                    </a>
+                @endif
                 <br/>
             @endforeach
         @else

@@ -32,10 +32,22 @@ Route::get('/glitch/{filename}', [
     'as' => 'photos.show', 'uses' => 'PhotosController@show'
 ]);
 
+Route::get('/glitch/gif/{filename}', [
+    'as' => 'gifs.show', 'uses' => 'GifsController@show'
+]);
+
 Route::get('/editor', [
     'as' => 'editor', 'uses' => 'EditorController@index', 'middleware' => 'auth'
 ]);
 
 Route::post('/upload', [
     'as' => 'photo.upload', 'uses' => 'PhotosController@upload', 'middleware' => 'auth'
+]);
+
+Route::get('/upload/gif', [
+    'as' => 'get.gif.id', 'uses' => 'GifsController@getId', 'middleware' => 'auth'
+]);
+
+Route::post('/upload/gif', [
+    'as' => 'photo.upload.gif', 'uses' => 'GifsController@upload', 'middleware' => 'auth'
 ]);

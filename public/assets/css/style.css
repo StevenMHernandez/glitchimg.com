@@ -125,21 +125,26 @@ div p, .background {
     background-color: rgba(251, 251, 251, .99);
     color: #000;
     padding: .5em;
-    display: inline-block;
-    margin: 0 3% .3em;
-    border-radius: .25em;
+    display: block;
+    margin: 0 auto .3em;
+    border-radius: 4px;
     max-width: 50%;
     min-width: 270px;
+}
+
+div p {
+    width: 50%;
+}
+
+div p img {
+    margin: 0 auto;
+    display: block;
 }
 
 .background {
     display: block;
     margin: 1em auto;
     padding: 1em;
-}
-
-div p {
-    width: 50%;
 }
 
 #wrapper img {
@@ -240,7 +245,7 @@ input[type="submit"] {
     opacity: .9;
 }
 
-#uploading, #offer, #modal {
+#uploading, #offer, #modal, #gif_modal {
     background: url('/assets/images/background-texture.png');
     border-radius: .5em;
     padding: 1.5em;
