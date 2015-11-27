@@ -48,7 +48,8 @@ class GifsController extends Controller
 
         $user = Auth::user();
         $user->with('settings');
-        if ($user->settings->share_to_our_tumblr && env('APP_ENV') != 'local' && empty($request->gif_id)) {
+
+        if ($user->settings->share_to_our_tumblr && env('APP_ENV') != 'local') {
             $client = new Tumblr\API\Client(env('TUMBLR_KEY'), env('TUMBLR_SECRET'));
             $client->setToken(env('TUMBLR_TOKEN'), env('TUMBLR_TOKEN_SECRET'));
             $client->createPost('created-at-glitchimg', [

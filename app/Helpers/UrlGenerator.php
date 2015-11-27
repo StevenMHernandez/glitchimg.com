@@ -58,7 +58,11 @@ class UrlGenerator
                 return 'https://twitter.com/intent/tweet?url=' . $route . '&hashtags=glitchart,glitch,glitchimg.com&via=glitch_img';
                 break;
             case 'tumblr':
-                $directLink = config('filesystems.disks.s3.url') . 'preview/' . $filename . '.jpg';
+                if ($type == 'gif') {
+                    $directLink = config('filesystems.disks.s3.url') . 'gif/' . $filename . '.gif';
+                } else {
+                    $directLink = config('filesystems.disks.s3.url') . 'preview/' . $filename . '.jpg';
+                }
                 return 'http://www.tumblr.com/share/photo?source=' . urlencode($directLink) . '&click_thru=' . $route . '&tags=glitch%2Cglitch%20art%2Cglitchimg.com&caption=%3C%2Fbr%3E%0Aimage%20created%20at%20%3Ca%20href%3D%22glitchimg.com%22%3Eglitchimg.com%3C%2Fa%3E.';
                 break;
             default:

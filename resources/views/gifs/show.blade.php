@@ -44,12 +44,10 @@
             <p style="text-align: center">
                 <img src="{{ UrlGenerator::build('preview_image', $frame->filename) }}"/>
                 <br/>
-                <a href="{{ UrlGenerator::build('zazzle', $frame->filename) }}"><i class="fa fa-picture-o"></i> Get it
-                    as a
-                    Print</a>
-                <a href="{{ UrlGenerator::build('zazzle_wrapping_paper', $frame->filename) }}"><i
-                            class="fa fa-gift"></i> Get
-                    it as Wrapping Paper</a>
+                <a target="_blank" href="{{ UrlGenerator::build('zazzle', $frame->filename) }}">
+                    <i class="fa fa-picture-o"></i></a>
+                <a target="_blank" href="{{ UrlGenerator::build('zazzle_wrapping_paper', $frame->filename) }}">
+                    <i class="fa fa-gift"></i></a>
             </p>
             <br/>
         @endforeach

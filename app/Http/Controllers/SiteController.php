@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Helpers\UrlGenerator;
 use App\Images;
 use Illuminate\Support\Facades\Cache;
-use Tumblr;
 
 class SiteController extends Controller
 {
