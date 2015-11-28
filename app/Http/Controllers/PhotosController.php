@@ -2,6 +2,7 @@
 
 use App\Images;
 use App\Jobs\ShareToTumblr;
+use App\Jobs\UploadPhotos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -16,12 +17,13 @@ class PhotosController extends Controller
     {
         $gifs = DB::table('gifs')
             ->where('user_id', Auth::user()->id)
+            ->whereNotNull('filename')
             ->select(['id', 'filename', 'user_id', 'created_at'])
             ->selectRaw('CONCAT("gif") as "type"');
 
         $photos = DB::table('images')
             ->where('user_id', Auth::user()->id)
-            ->where('gif_id', null)
+            ->whereNull('gif_id')
             ->select(['id', 'filename', 'user_id', 'created_at'])
             ->selectRaw('CONCAT("photo") as "type"')
             ->union($gifs)
@@ -43,18 +45,7 @@ class PhotosController extends Controller
         $user = Auth::user();
         $user->with('settings');
 
-        $disk = Storage::disk('s3');
         $filename = str_random(18);
-
-        $largeData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $request->large));
-        file_put_contents(storage_path() . '/app/images/' . $filename . '.png', $largeData);
-        $disk->put('full/' . $filename . '.png', file_get_contents(storage_path() . '/app/images/' . $filename . '.png', 'public'));
-        unlink(storage_path() . '/app/images/' . $filename . '.png');
-
-        $previewData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $request->preview));
-        file_put_contents(storage_path() . '/app/images/' . $filename . '.jpg', $previewData);
-        $disk->put('preview/' . $filename . '.jpg', file_get_contents(storage_path() . '/app/images/' . $filename . '.jpg', 'public'));
-        unlink(storage_path() . '/app/images/' . $filename . '.jpg');
 
         $image = Images::create([
             'filename' => $filename,
@@ -64,6 +55,22 @@ class PhotosController extends Controller
             'gif_id' => $request->gif_id
         ]);
         $image->save();
+
+        if (!empty($request->gif_id)) {
+            $this->dispatch(new UploadPhotos($filename, $request->large, $request->preview));
+        } else {
+            $disk = Storage::disk('s3');
+
+            $largeData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $request->large));
+            file_put_contents(storage_path() . '/app/images/' . $filename . '.png', $largeData);
+            $disk->put('full/' . $filename . '.png', file_get_contents(storage_path() . '/app/images/' . $filename . '.png', 'public'));
+            unlink(storage_path() . '/app/images/' . $filename . '.png');
+
+            $previewData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $request->preview));
+            file_put_contents(storage_path() . '/app/images/' . $filename . '.jpg', $previewData);
+            $disk->put('preview/' . $filename . '.jpg', file_get_contents(storage_path() . '/app/images/' . $filename . '.jpg', 'public'));
+            unlink(storage_path() . '/app/images/' . $filename . '.jpg');
+        }
 
         if ($user->settings->share_to_our_tumblr && env('APP_ENV') != 'local' && empty($image->gif_id)) {
             $this->dispatch(new ShareToTumblr($user->name, $filename));
