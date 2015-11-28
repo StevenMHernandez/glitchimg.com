@@ -1,4 +1,5 @@
 /vendor
+composer.lock
 /node_modules
 public/assets/bower_components
 Homestead.yaml

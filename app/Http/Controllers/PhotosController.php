@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
 use App\Images;
+use App\Jobs\ShareToTumblr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -39,6 +40,9 @@ class PhotosController extends Controller
 
     public function upload(Request $request)
     {
+        $user = Auth::user();
+        $user->with('settings');
+
         $disk = Storage::disk('s3');
         $filename = str_random(18);
 
@@ -56,30 +60,13 @@ class PhotosController extends Controller
             'filename' => $filename,
             'orientation' => $request->orientation,
             'ratio' => $request->ratio,
-            'user_id' => Auth::user()->id,
+            'user_id' => $user->id,
             'gif_id' => $request->gif_id
         ]);
         $image->save();
 
-        $urls = [
-            'shareable' => config('filesystems.disks.s3.url') . 'full/' . $filename . '.png',
-            'direct' => config('filesystems.disks.s3.direct_url') . 'full/' . $filename . '.png',
-            'page' => route('photos.show', $filename)
-        ];
-
-        $user = Auth::user();
-        $user->with('settings');
-        if ($user->settings->share_to_our_tumblr && env('APP_ENV') != 'local' && empty($request->gif_id)) {
-            $client = new Tumblr\API\Client(env('TUMBLR_KEY'), env('TUMBLR_SECRET'));
-            $client->setToken(env('TUMBLR_TOKEN'), env('TUMBLR_TOKEN_SECRET'));
-            $client->createPost('created-at-glitchimg', [
-                'type' => 'photo',
-                'state' => 'queue',
-                'tags' => 'glitch,glitchart,glitch art,glitchimg.com',
-                'caption' => 'Glitch art created by ' . $user->name . ' at <a href="http://glitchimg.com">glitchimg.com</a>',
-                'link' => $urls['page'],
-                'source' => $urls['shareable'],
-            ]);
+        if ($user->settings->share_to_our_tumblr && env('APP_ENV') != 'local' && empty($image->gif_id)) {
+            $this->dispatch(new ShareToTumblr($user->name, $filename));
         }
 
         return [
