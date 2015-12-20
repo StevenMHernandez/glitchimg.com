@@ -648,6 +648,41 @@
                         shift = 0;
                     }
                     ctx.drawImage(safeTx.canvas, 0, i, width, 1, shift, i, width, 1);
+                }
+            }
+        }
+        if (toneW == 'random') {
+            var random = Math.round((Math.random() * (2 * toneA)) - toneA);
+            var shiftSign = 0;
+            if (toneX == 'X') {
+                for (var i = 0; i < width; i++) {
+                    var shift = Math.sin(i / tonePer * 3);
+
+                    if (shift > 0 && shiftSign == 0) {
+                        random = Math.round((Math.random() * (2 * toneA)) - toneA);
+                        shiftSign = 1;
+                    } else if (shift < 0 && shiftSign == 1) {
+                        random = Math.round((Math.random() * (2 * toneA)) - toneA);
+                        shiftSign = 0;
+                    }
+
+                    ctx.drawImage(safeTx.canvas, i, 0, 1, height, i, random, 1, height);
+                }
+            }
+            else {
+                for (var i = 0; i < height; i++) {
+                    var shift = Math.sin(i / tonePer * 3);
+
+                    if (shift > 0 && shiftSign == 0) {
+                        random = Math.round((Math.random() * (2 * toneA)) - toneA);
+                        shiftSign = 1;
+                    } else if (shift < 0 && shiftSign == 1) {
+                        random = Math.round((Math.random() * (2 * toneA)) - toneA);
+                        shiftSign = 0;
+                    }
+
+//                    ctx.drawImage(safeTx.canvas, i, 0, 1, height, i, random, 1, height);
+                    ctx.drawImage(safeTx.canvas, 0, i, width, 1, random, i, width, 1);
 
                 }
             }
