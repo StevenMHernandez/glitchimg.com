@@ -104,7 +104,7 @@
         <!--<span onmousedown="past()" onmouseup="render()" id="upload">compare to past.</span>-->
         <span onClick="upload()" id="upload">save & share.</span>
         <span id="gif_save_button">save gif.</span>
-        <span id="gif_button">create gif.</span>
+        <span id="gif_button" style="color: #bb0000">create gif.</span>
 
         <div>
             <span onClick="loadFilter('ebit')">

@@ -63,7 +63,12 @@ class UrlGenerator
                 } else {
                     $directLink = config('filesystems.disks.s3.url') . 'preview/' . $filename . '.jpg';
                 }
-                return 'http://www.tumblr.com/share/photo?source=' . urlencode($directLink) . '&click_thru=' . $route . '&tags=glitch%2Cglitch%20art%2Cglitchimg.com&caption=%3C%2Fbr%3E%0Aimage%20created%20at%20%3Ca%20href%3D%22glitchimg.com%22%3Eglitchimg.com%3C%2Fa%3E.';
+                $url = 'http://www.tumblr.com/share/photo?source=' . urlencode($directLink) . '&click_thru=' . $route . '&tags=glitch%2Cglitch%20art%2Cglitchimg.com';
+                if ($type='gif') {
+                    $url .= '%2Cgif%2Cglitch%20gif';
+                }
+                $url .= '&caption=%3C%2Fbr%3E%0Aimage%20created%20at%20%3Ca%20href%3D%22glitchimg.com%22%3Eglitchimg.com%3C%2Fa%3E.';
+                return $url;
                 break;
             default:
                 return 'Site "' . $site . '" unknown."';
