@@ -42,6 +42,7 @@ class ShareToTumblr extends Job implements SelfHandling, ShouldQueue
                 'page' => route('gifs.show', $this->filename)
             ];
             $tags = 'glitch,glitchart,glitch art,glitchimg.com';
+            $art_type = 'Glitch art';
         } else {
             $urls = [
                 'shareable' => config('filesystems.disks.s3.url') . 'full/' . $this->filename . '.png',
@@ -49,6 +50,7 @@ class ShareToTumblr extends Job implements SelfHandling, ShouldQueue
                 'page' => route('photos.show', $this->filename)
             ];
             $tags = 'glitch,glitch art,glitch gif,gif,glitchimg.com';
+            $art_type = 'Glitch gif';
         }
 
         $client = new Tumblr\API\Client(env('TUMBLR_KEY'), env('TUMBLR_SECRET'));
@@ -57,7 +59,7 @@ class ShareToTumblr extends Job implements SelfHandling, ShouldQueue
             'type' => 'photo',
             'state' => 'queue',
             'tags' => $tags,
-            'caption' => 'Glitch art created by ' . $this->username . ' at <a href="http://glitchimg.com">glitchimg.com</a>',
+            'caption' => $art_type . ' created by ' . $this->username . ' at <a href="http://glitchimg.com">glitchimg.com</a>',
             'link' => $urls['page'],
             'source' => $urls['shareable'],
         ]);

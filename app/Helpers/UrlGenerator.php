@@ -38,18 +38,37 @@ class UrlGenerator
                 $photo = Images::where('filename', $filename)->first();
                 $d = 10;
                 $directLink = config('filesystems.disks.s3.direct_url') . 'full/' . $filename . '.png';
-                $printLink = 'http://www.zazzle.com/api/create/at-238499648125991919?rf=238499648125991919&ax=Linkover&pd=' . '190612048809777765' . '&fwd=productpage&tc=pop&ic=' . $filename . '&t_image0_iid=' . $directLink;
+                $query_params = [
+                    'rf' => '238499648125991919', //affiliate
+                    'ax' => 'Linkover',
+                    'pd' => '190612048809777765', //product id
+                    'fwd' => 'productpage',
+                    'tc' => 'pop',
+                    'ic' => $filename,
+                    't_image0_iid' => $directLink
+                ];
                 if ($photo->orientation == 'horizontal') {
-                    $printLink .= '&size=[' . $d . '%2C' . $d * $photo->ratio . ']';
+                    $printLink['size'] = '[' . $d . '%2C' . $d * $photo->ratio . ']';
                 } else if ($photo->orientation == 'vertical') {
-                    $printLink .= '&size=[' . $d * $photo->ratio . '%2C' . $d . ']';
+                    $printLink['size'] = '[' . $d * $photo->ratio . '%2C' . $d . ']';
                 }
+                $printLink = http_build_query($query_params);
+                $printLink = 'http://www.zazzle.com/api/create/at-238499648125991919?' . $printLink;
                 return $printLink;
                 break;
             case 'zazzle_wrapping_paper' :
                 $directLink = config('filesystems.disks.s3.direct_url') . 'full/' . $filename . '.png';
-                $printLink = 'http://www.zazzle.com/api/create/at-238499648125991919?rf=238499648125991919&ax=Linkover&pd=' . '256754757427346084' . '&fwd=ProductPage&ed=true&tc=&ic=' . $filename . '&t_image0_iid=' . $directLink;
-                return $printLink;
+                $printLink = http_build_query([
+                    'rf' => '238499648125991919', //affiliate
+                    'ax' => 'Linkover',
+                    'pd' => '256754757427346084', //product id
+                    'ed' => 'true',
+                    'fwd' => 'productpage',
+                    'tc' => '',
+                    'ic' => $filename,
+                    't_image0_iid' => $directLink
+                ]);
+                return 'http://www.zazzle.com/api/create/at-238499648125991919?' . $printLink;
                 break;
             case 'facebook':
                 return 'https://www.facebook.com/sharer/sharer.php?u=' . $route;
@@ -60,14 +79,20 @@ class UrlGenerator
             case 'tumblr':
                 if ($type == 'gif') {
                     $directLink = config('filesystems.disks.s3.url') . 'gif/' . $filename . '.gif';
+                    $caption = 'gif created at <a href="http://glitchimg.com">glitchimg</a>';
+                    $tags = 'glitch, glitch art, glitch gif, gif, glitchimg.com';
                 } else {
                     $directLink = config('filesystems.disks.s3.url') . 'preview/' . $filename . '.jpg';
+                    $caption = 'image created at <a href="http://glitchimg.com">glitchimg</a>';
+                    $tags = 'glitch, glitch art, glitchimg.com';
                 }
-                $url = 'http://www.tumblr.com/share/photo?source=' . urlencode($directLink) . '&click_thru=' . $route . '&tags=glitch%2Cglitch%20art%2Cglitchimg.com';
-                if ($type='gif') {
-                    $url .= '%2Cgif%2Cglitch%20gif';
-                }
-                $url .= '&caption=%3C%2Fbr%3E%0Aimage%20created%20at%20%3Ca%20href%3D%22glitchimg.com%22%3Eglitchimg.com%3C%2Fa%3E.';
+                $url = http_build_query([
+                    'source' => $directLink,
+                    'click_thru' => $route,
+                    'tags' => $tags,
+                    'caption' => $caption
+                ]);
+                $url = 'http://www.tumblr.com/share/photo?' . $url;
                 return $url;
                 break;
             default:
