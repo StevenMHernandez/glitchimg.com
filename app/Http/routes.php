@@ -13,7 +13,7 @@ Route::get('/logout', [
 ]);
 
 Route::get('login/{provider?}', [
-    'uses' =>'Auth\AuthController@login', 'middleware' => 'guest'
+    'uses' => 'Auth\AuthController@login', 'middleware' => 'guest'
 ]);
 
 Route::get('/profile', [
@@ -50,4 +50,8 @@ Route::get('/upload/gif', [
 
 Route::post('/upload/gif', [
     'as' => 'photo.upload.gif', 'uses' => 'GifsController@upload', 'middleware' => 'auth'
+]);
+
+Route::get('/policy', [
+    'as' => 'policy', 'uses' => 'SiteController@policy'
 ]);

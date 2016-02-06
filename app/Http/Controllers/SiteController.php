@@ -21,4 +21,9 @@ class SiteController extends Controller
     {
         return view('login');
     }
+
+    public function policy()
+    {
+        return view('policy');
+    }
 }
