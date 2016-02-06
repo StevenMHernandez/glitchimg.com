@@ -75,10 +75,15 @@
                              onmouseout="printOff();"
                              src="/assets/images/print.png"/>
                     </a>
-                    <a target="_blank" id="shareLink_{{ Auth::user()->provider }}" href="#"><img title="share on {{ Auth::user()->provider }}"
-                                                                    id="share" style="border-radius:.5em; height: 72px;"
-                                                                    src="/assets/images/{{ Auth::user()->provider }}.png"/>
-                    </a>
+                    <a target="_blank" id="shareLink_facebook" href="#"><img title="share on facebook"
+                                                                           id="share" style="border-radius:.5em; height: 72px;"
+                                                                           src="/assets/images/facebook.png"/></a>
+                    <a target="_blank" id="shareLink_twitter" href="#"><img title="share on twitter"
+                                                                           id="share" style="border-radius:.5em; height: 72px;"
+                                                                           src="/assets/images/twitter.png"/></a>
+                    <a target="_blank" id="shareLink_tumblr" href="#"><img title="share on tumblr"
+                                                                           id="share" style="border-radius:.5em; height: 72px;"
+                                                                           src="/assets/images/tumblr.png"/></a>
 				</span>
 			</span>
 			<span id="gif_modal">
@@ -421,6 +426,8 @@
                         document.getElementById('viewThis').href = data.urls.glitchimg;
                         document.getElementById('shareLink_facebook').href = data.urls.facebook;
                         document.getElementById('shareLink_twitter').href = data.urls.twitter;
+                        console.log(data.urls, document.getElementById('shareLink_tumblr'));
+                        document.getElementById('shareLink_tumblr').href = data.urls.tumblr;
                     }
                 }
         );
