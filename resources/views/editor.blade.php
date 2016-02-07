@@ -94,10 +94,15 @@
                     </h3>
                 </a>
                 <span style="text-align: center">
-                    <a target="_blank" id="gif_shareLink_{{ Auth::user()->provider }}" href="#"><img title="share on {{ Auth::user()->provider }}"
-                                                                    id="share" style="border-radius:.5em; height: 72px;"
-                                                                    src="/assets/images/{{ Auth::user()->provider }}.png"/>
-                    </a>
+                    <a target="_blank" id="gif_shareLink_facebook" href="#"><img title="share on facebook"
+                                                                             id="share" style="border-radius:.5em; height: 72px;"
+                                                                             src="/assets/images/facebook.png"/></a>
+                    <a target="_blank" id="gif_shareLink_twitter" href="#"><img title="share on twitter"
+                                                                            id="share" style="border-radius:.5em; height: 72px;"
+                                                                            src="/assets/images/twitter.png"/></a>
+                    <a target="_blank" id="gif_shareLink_tumblr" href="#"><img title="share on tumblr"
+                                                                           id="share" style="border-radius:.5em; height: 72px;"
+                                                                           src="/assets/images/tumblr.png"/></a>
 				</span>
 			</span>
     </div>
