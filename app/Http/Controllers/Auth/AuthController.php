@@ -30,6 +30,11 @@ class AuthController extends Controller
                 case "facebook":
                     $userData->provider = 'facebook';
                     break;
+                case "tumblr":
+                    $userData->provider = 'tumblr';
+                    $userData->name = $userData->nickname;
+                    $userData->id = "tumblr_" . $userData->nickname;
+                    break;
             }
 
             $user = User::where('provider_id', $userData->id)->first();
@@ -56,7 +61,8 @@ class AuthController extends Controller
         return Socialite::with($provider)->redirect();
     }
 
-    public function logout () {
+    public function logout()
+    {
         Auth::logout();
         return Redirect::route('index');
     }

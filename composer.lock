@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5d59cc27311b2c297f1356793a288b78",
-    "content-hash": "75e67cb1c6384c12afecedd5b5def155",
+    "hash": "3904c123b9fa149ba49ea77a19b719a4",
+    "content-hash": "d3a991808bac96e3eb7f6f6ad7ea1120",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -421,6 +421,7 @@
                 "rest",
                 "web service"
             ],
+            "abandoned": "guzzlehttp/guzzle",
             "time": "2015-03-18 18:23:50"
         },
         {
@@ -1683,6 +1684,43 @@
             ],
             "description": "Easily add new or override built-in providers in Laravel Socialite.",
             "time": "2015-06-27 08:24:58"
+        },
+        {
+            "name": "socialiteproviders/tumblr",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SocialiteProviders/Tumblr.git",
+                "reference": "b03510df808227be9f4210925769023031f7241e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SocialiteProviders/Tumblr/zipball/b03510df808227be9f4210925769023031f7241e",
+                "reference": "b03510df808227be9f4210925769023031f7241e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.0",
+                "socialiteproviders/manager": "~1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SocialiteProviders\\Tumblr\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "DraperStudio",
+                    "email": "hello@draperstud.io"
+                }
+            ],
+            "description": "Tumblr OAuth1 Provider for Laravel Socialite",
+            "time": "2015-06-18 14:23:16"
         },
         {
             "name": "socialiteproviders/twitter",

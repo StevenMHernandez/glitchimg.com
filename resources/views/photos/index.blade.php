@@ -20,7 +20,7 @@
                 <br/>
             @endforeach
         @else
-            <a href="/editor">you need to glitch-it-kid!</a>
+            <a href="/editor">start glitching!</a>
         @endif
     </div>
 @endsection
