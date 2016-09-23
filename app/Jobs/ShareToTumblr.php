@@ -41,7 +41,7 @@ class ShareToTumblr extends Job implements SelfHandling, ShouldQueue
                 'direct' => config('filesystems.disks.s3.direct_url') . 'gif/' . $this->filename . '.gif',
                 'page' => route('gifs.show', $this->filename)
             ];
-            $tags = 'glitch,glitchart,glitch art,glitchimg.com';
+            $tags = $this->getRandomTags(['glitch gif', 'gif']) . ',glitchimg.com';
             $art_type = 'Glitch art';
         } else {
             $urls = [
@@ -49,7 +49,7 @@ class ShareToTumblr extends Job implements SelfHandling, ShouldQueue
                 'direct' => config('filesystems.disks.s3.direct_url') . 'full/' . $this->filename . '.png',
                 'page' => route('photos.show', $this->filename)
             ];
-            $tags = 'glitch,glitch art,glitch gif,gif,glitchimg.com';
+            $tags = $this->getRandomTags() . ',glitchimg.com';
             $art_type = 'Glitch gif';
         }
 
@@ -63,5 +63,24 @@ class ShareToTumblr extends Job implements SelfHandling, ShouldQueue
             'link' => $urls['page'],
             'source' => $urls['shareable'],
         ]);
+    }
+
+    protected function getRandomTags(array $additional = [])
+    {
+        $possible = shuffle(array_merge($additional, [
+            'glitch',
+            'glitch art',
+            'glitched',
+            'glitchy',
+            'digital art',
+            'glitchart',
+            'generative art',
+            'art',
+            'computer art',
+            'glitch effect',
+            'glitch effects'
+        ]));
+
+        return implode(',', array_slice($possible, 0, random_int(1,4)));
     }
 }
