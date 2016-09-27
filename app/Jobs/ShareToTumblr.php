@@ -67,7 +67,7 @@ class ShareToTumblr extends Job implements SelfHandling, ShouldQueue
 
     protected function getRandomTags(array $additional = [])
     {
-        $possible = shuffle(array_merge($additional, [
+        $possible = array_merge($additional, [
             'glitch',
             'glitch art',
             'glitched',
@@ -79,7 +79,9 @@ class ShareToTumblr extends Job implements SelfHandling, ShouldQueue
             'computer art',
             'glitch effect',
             'glitch effects'
-        ]));
+        ]);
+
+        shuffle($possible);
 
         return implode(',', array_slice($possible, 0, random_int(1,4)));
     }
